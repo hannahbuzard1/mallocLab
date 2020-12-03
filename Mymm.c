@@ -133,22 +133,13 @@ void mm_free(void *ptr)
  */
 void *mm_realloc(void *ptr, size_t size)
 {
-  //case 1: ptr = NULL
-
-  //case 2: ptr = 0
-
-  //case 3: ptr is not NULL
-    void *oldptr = ptr;
-    void *newptr;
-    size_t copySize;e
-
-    newptr = mm_malloc(size);
-    if (newptr == NULL)
-      return NULL;
-    copySize = *(size_t *)((char *)oldptr - SIZE_T_SIZE);
-    if (size < copySize)
-      copySize = size;
-    memcpy(newptr, oldptr, copySize);
-    mm_free(oldptr);
-    return newptr;
+   size_t *header = (size_t *)((char *)ptr - SIZE_T_SIZE);
+   size_t oldsize = *header & ~1L,
+   newsize = ALIGN(size + SIZE_T_SIZE);
+   void *newptr;
+   if (oldsize >= newsize) {
+     return ptr;
+   } else {
+     return newptr;
+   }
 }
